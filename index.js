@@ -31,6 +31,7 @@ app.use(cors());
 
 // })
 
+// Post messages from user chatGPT to get a response
 app.post("/", async (req, res) => {
     const {message} = req.body;
     const completion = await openai.createChatCompletion({
