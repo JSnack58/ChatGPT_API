@@ -2,6 +2,8 @@ import {Configuration, OpenAIApi} from "openai"
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors"
+import 'dotenv/config'
+
 const configuration = new Configuration({
     organization: process.env.ORGANIZATION,
     apiKey: process.env.CHATGPT_API_KEY,
