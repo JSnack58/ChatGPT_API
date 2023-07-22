@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GPT3.5 Chat API Model</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>ChatGPT3.5 API</h1>
+    <form action="">
+        <input type="texy" name="message" id="message">
+        <button type="submit">Send</button>
+    </form>
+    <div id="chat-log"></div>
+    
+	<script>
+        // The histoy of the conversation
+        let messages = [
+            {"role" : "assistant", "content" : "The Los Angles Dodgers won the World Series om 2020."},
+            {"role" : "user", "content" : "Where was it played?" }
+        ]
+        const chatLog = document.getElementById('chat-log');
+        const message = document.getElementById('message');
+        const form = document.querySelector('form');
+        // runs every time the sumbit button is pressed
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log("you pushed me");
+            // Take submitted text and place inside the user message template to push to he conversation history
+            const messageText = message.value;
+            const newMessage = {"role" : "user", "content" : `${messageText}` };
+            messages.push(newMessage);
+            message.value = '';
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add('message--sent');
+            messageElement.innerHTML = `<div class="message__text">${messageText}<div>`;
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            fetch('http://localhost:3000',{
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    messages
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Given the response data add the response message the conversation history
+                let newAssistanMessage = {"role": "assistant", "content" : `${data.completion.content}`}
+                messages.push(newAssistanMessage);
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add('message--received');
+                messageElement.innerHTML = `<div class="message__text">${data.completion.content}</div>`;
+                chatLog.appendChild(messageElement);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            })
+        })
+    </script>
+  </body>
+</html>

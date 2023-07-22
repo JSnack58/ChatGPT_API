@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors"
 const configuration = new Configuration({
     oraginazation: "org-olqlWTRPrzmt8b245yg0EgbF",
-    apiKey: "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"
+    apiKey: "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"
 });
 
 const openai = new OpenAIApi(configuration)
@@ -17,26 +17,11 @@ app.use(cors());
 
 // Get the role the of ChatGPT place it on locally hosted webpage
 
-// app.get("/", async (req, res) => {
+app.get("/", async (req, res) => {
 
-//     const completion = await openai.createChatCompletion({
-//         model: "gpt-3.5-turbo",
-//         messages: [{role:"user", content:"Hello World"},]
-//     })
-//     res.json(
-
-//     {completion: completion.data.choices[0].message}
-//     )
-
-
-// })
-
-// Post messages from user chatGPT to get a response
-app.post("/", async (req, res) => {
-    const {message} = req.body;
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
-        messages: [{role:"user", content:`${message}`},]
+        messages: [{role:"user", content:"Hello World"},]
     })
     res.json(
 
@@ -44,5 +29,26 @@ app.post("/", async (req, res) => {
     )
 
 
+})
+
+// Post messages from user chatGPT to get a response
+app.post("/", async (req, res) => {
+    const {messages} = req.body;
+    console.log(messages)
+    const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        // The message is the history GPT can use for context.
+        // The role determine which part of 
+        messages: [
+            {"role":"system", "content": "You are DesignGPT helptful assistant graphics design chatbot"},
+            ...messages
+            // {role:"user", content:`${message}`},
+            // {role:"assistatn", content: ""}
+        ]
+    })
+    res.json(
+
+    {completion: completion.data.choices[0].message}
+    )
 })
 app.listen(port, ()=>{console.log(`Example app listneing at http://localhost:${port}`)});
