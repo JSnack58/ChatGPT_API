@@ -3,8 +3,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors"
 const configuration = new Configuration({
-    oraginazation: "org-olqlWTRPrzmt8b245yg0EgbF",
-    apiKey: "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"
+    organization: process.env.ORGANIZATION,
+    apiKey: process.env.CHATGPT_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration)
