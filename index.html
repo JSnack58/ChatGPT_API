@@ -36,7 +36,7 @@
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
             messageElement.classList.add('message--sent');
-            messageElement.innerHTML = `<div class="message__text">${messageText}<div>`;
+            messageElement.innerHTML = `<div class="message__text">You: ${messageText}<div>`;
             chatLog.appendChild(messageElement);
             chatLog.scrollTop = chatLog.appendChild(messageElement);
             chatLog.scrollTop = chatLog.scrollHeight;
@@ -57,7 +57,7 @@
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message');
                 messageElement.classList.add('message--received');
-                messageElement.innerHTML = `<div class="message__text">${data.completion.content}</div>`;
+                messageElement.innerHTML = `<div class="message__text">GPT: ${data.completion.content}</div>`;
                 chatLog.appendChild(messageElement);
                 chatLog.scrollTop = chatLog.scrollHeight;
             })
